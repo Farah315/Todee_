@@ -24,10 +24,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _fabController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
+      value: 1.0,
     );
-
-    // START THE FAB ANIMATION - This was missing!
-    _fabController.forward();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<TaskProvider>().loadTasks();
@@ -274,7 +272,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   Future<void> _addTask(BuildContext context) async {
-    _fabController.forward().then((_) => _fabController.reverse());
+
+    await _fabController.reverse();
+    await _fabController.forward();
 
     final task = await showDialog<Task>(
       context: context,
@@ -290,6 +290,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             backgroundColor: Colors.green,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            duration: const Duration(seconds: 2),
           ),
         );
       }
@@ -311,6 +312,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             backgroundColor: Colors.blue,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            duration: const Duration(seconds: 2),
           ),
         );
       }
